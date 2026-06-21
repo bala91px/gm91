@@ -125,6 +125,9 @@
   .form-foot svg{width:14px;height:14px;flex:0 0 14px;margin-top:3px;color:var(--green)}
   .or-wa{text-align:center;margin-top:var(--s-4);font-size:.86rem;color:var(--ink-soft)}
   .or-wa a{color:var(--green);font-weight:600}
+  .onetap-sub{text-align:center;font-size:.78rem;color:var(--ink-soft);margin-top:var(--s-2)}
+  .or-divider{display:flex;align-items:center;gap:var(--s-3);margin:var(--s-5) 0;color:var(--ink-soft);font-size:.76rem;letter-spacing:.02em}
+  .or-divider::before,.or-divider::after{content:"";flex:1;height:1px;background:var(--line)}
   /* success state */
   .form-success{display:none;text-align:center;padding:var(--s-6) var(--s-2)}
   .form-card.done .form-body{display:none}
@@ -218,7 +221,7 @@
   <div class="bar-inner">
     <a class="logo" href="#top" data-cta="logo"><span class="logo-mark">G91</span><span><b>GM91</b><span>Growth Machine 91</span></span></a>
     <!-- TODO: replace 91XXXXXXXXXX with the real WhatsApp business number -->
-    <a class="bar-cta" href="https://wa.me/91XXXXXXXXXX?text=Hi%20GM91%2C%20I%27d%20like%20a%20free%20Google%20audit" data-cta="header-wa" rel="noopener" target="_blank">
+    <a class="bar-cta" href="https://wa.me/91XXXXXXXXXX?text=Hi%20GM91%2C%20I%27d%20like%20my%20free%20Google%20audit.%20My%20business%20is%20" data-cta="header-wa" rel="noopener" target="_blank">
       <svg viewBox="0 0 24 24" fill="currentColor"><path d="M.06 24l1.7-6.2A11.9 11.9 0 1 1 12 24a11.9 11.9 0 0 1-5.7-1.45L.06 24zM6.6 20.1l.37.22a9.9 9.9 0 0 0 5.04 1.38 9.9 9.9 0 1 0-8.4-4.65l.24.38-1 3.65 3.75-.98z M17.5 14.4c-.3-.15-1.76-.87-2-.97s-.47-.15-.67.15-.77.96-.94 1.16-.35.22-.64.07a8.1 8.1 0 0 1-2.4-1.48 9 9 0 0 1-1.66-2.06c-.17-.3 0-.46.13-.6l.45-.52c.15-.17.2-.3.3-.5s.05-.37 0-.52-.67-1.6-.92-2.2-.48-.5-.67-.5h-.57a1.1 1.1 0 0 0-.8.37 3.3 3.3 0 0 0-1.04 2.46 5.8 5.8 0 0 0 1.2 3.05 13.1 13.1 0 0 0 5.05 4.46c.7.3 1.25.48 1.68.62a4 4 0 0 0 1.86.12c.57-.09 1.76-.72 2-1.42s.25-1.28.17-1.4-.27-.22-.57-.37z"/></svg>
       <span class="lbl">Chat on WhatsApp</span>
     </a>
@@ -251,7 +254,7 @@
       </div>
       <p class="microcopy">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>
-        Free · takes 2 minutes · no card, no commitment
+        Free · one tap · no card, no commitment
       </p>
 
       <div class="trust-line">
@@ -264,38 +267,27 @@
     <!-- LEAD FORM -->
     <div class="form-card" id="lead">
       <div class="form-body">
-        <h2>Get your free Google audit</h2>
-        <p class="fc-sub">Tell us where to look. We'll send your audit + action plan on WhatsApp.</p>
+        <h2>Get your free audit</h2>
+        <p class="fc-sub">Drop your number — that's it. We do the rest on WhatsApp. No forms, no waiting.</p>
 
+        <!-- PRIMARY PATH: one-tap WhatsApp — zero fields, fewest clicks (Domino's principle) -->
+        <!-- TODO: replace 91XXXXXXXXXX with the real WhatsApp business number -->
+        <a class="btn btn-wa btn-block" href="https://wa.me/91XXXXXXXXXX?text=Hi%20GM91%2C%20I%27d%20like%20my%20free%20Google%20audit.%20My%20business%20is%20" data-cta="onetap-wa" rel="noopener" target="_blank">
+          <svg viewBox="0 0 24 24" fill="currentColor" width="20" height="20"><path d="M.06 24l1.7-6.2A11.9 11.9 0 1 1 12 24a11.9 11.9 0 0 1-5.7-1.45L.06 24zM6.6 20.1l.37.22a9.9 9.9 0 0 0 5.04 1.38 9.9 9.9 0 1 0-8.4-4.65l.24.38-1 3.65 3.75-.98z M17.5 14.4c-.3-.15-1.76-.87-2-.97s-.47-.15-.67.15-.77.96-.94 1.16-.35.22-.64.07a8.1 8.1 0 0 1-2.4-1.48 9 9 0 0 1-1.66-2.06c-.17-.3 0-.46.13-.6l.45-.52c.15-.17.2-.3.3-.5s.05-.37 0-.52-.67-1.6-.92-2.2-.48-.5-.67-.5h-.57a1.1 1.1 0 0 0-.8.37 3.3 3.3 0 0 0-1.04 2.46 5.8 5.8 0 0 0 1.2 3.05 13.1 13.1 0 0 0 5.05 4.46c.7.3 1.25.48 1.68.62a4 4 0 0 0 1.86.12c.57-.09 1.76-.72 2-1.42s.25-1.28.17-1.4-.27-.22-.57-.37z"/></svg>
+          Get my free audit on WhatsApp
+        </a>
+        <p class="onetap-sub">One tap · opens WhatsApp · about 10 seconds</p>
+
+        <div class="or-divider"><span>or just leave your number</span></div>
+
+        <!-- FALLBACK PATH: single field for people who'd rather we reach out -->
         <!-- TODO: replace action with your Formspree endpoint (https://formspree.io/f/XXXXXXXX).
              Until then, the form falls back to opening a prefilled email to hello@91pixels.com. -->
         <form id="leadForm" action="https://formspree.io/f/YOUR_FORM_ID" method="POST" novalidate>
-          <div class="field" id="f-biz">
-            <label for="biz">Business name</label>
-            <input type="text" id="biz" name="business" autocomplete="organization" required aria-describedby="e-biz" placeholder="e.g. Glow Salon &amp; Spa" />
-            <span class="err" id="e-biz">Please enter your business name.</span>
-          </div>
-          <div class="field" id="f-city">
-            <label for="city">City / area</label>
-            <input type="text" id="city" name="city" autocomplete="address-level2" required aria-describedby="e-city" placeholder="e.g. Kochi, Kerala" />
-            <span class="err" id="e-city">Which city should we search in?</span>
-          </div>
           <div class="field" id="f-wa">
-            <label for="wa">WhatsApp number</label>
+            <label for="wa">Your WhatsApp number</label>
             <input type="tel" id="wa" name="whatsapp" inputmode="numeric" autocomplete="tel" required aria-describedby="e-wa" placeholder="10-digit mobile number" />
-            <span class="err" id="e-wa">Enter a valid mobile number so we can send your audit.</span>
-          </div>
-          <div class="field" id="f-type">
-            <label for="btype">Business type <span class="opt">· optional</span></label>
-            <input type="text" id="btype" name="business_type" placeholder="Tap a chip or type your own" />
-            <div class="chips" id="typeChips" role="group" aria-label="Business type">
-              <span class="chip" role="button" tabindex="0" data-type="Salon / Spa">Salon / Spa</span>
-              <span class="chip" role="button" tabindex="0" data-type="Dental clinic">Dental clinic</span>
-              <span class="chip" role="button" tabindex="0" data-type="Skincare / Aesthetics">Skincare</span>
-              <span class="chip" role="button" tabindex="0" data-type="Restaurant">Restaurant</span>
-              <span class="chip" role="button" tabindex="0" data-type="PG / Hostel">PG / Hostel</span>
-              <span class="chip" role="button" tabindex="0" data-type="Other">Other</span>
-            </div>
+            <span class="err" id="e-wa">Enter a valid mobile number so we can reach you.</span>
           </div>
 
           <!-- hidden context for tracking & routing -->
@@ -304,25 +296,22 @@
           <input type="hidden" name="source" value="audit-lp" />
           <input type="hidden" name="page_url" id="pageUrl" value="" />
 
-          <button type="submit" class="btn btn-gold btn-block" data-cta="form-submit" style="margin-top:var(--s-2)">
+          <button type="submit" class="btn btn-gold btn-block" data-cta="form-submit" style="margin-top:var(--s-1)">
             <span class="ab ab-a">Get my free audit</span>
             <span class="ab ab-b">Send my free audit</span>
           </button>
 
           <p class="form-foot">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="11" width="16" height="9" rx="2"/><path d="M8 11V8a4 4 0 0 1 8 0v3"/></svg>
-            No spam. We only message you about your audit. Your number stays private.
+            Just your number. One message about your free audit — no spam, kept private.
           </p>
         </form>
-
-        <!-- TODO: replace 91XXXXXXXXXX with the real WhatsApp business number -->
-        <p class="or-wa">Prefer to chat? <a href="https://wa.me/91XXXXXXXXXX?text=Hi%20GM91%2C%20I%27d%20like%20a%20free%20Google%20audit" data-cta="form-wa" rel="noopener" target="_blank">Message us on WhatsApp →</a></p>
       </div>
 
       <div class="form-success" aria-live="polite">
         <div class="tick"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg></div>
         <h2 id="successHead" tabindex="-1">You're in. 🎉</h2>
-        <p>We've got your details. Your free Google audit + action plan lands on WhatsApp within 1 working day. Keep an eye out from <b>91pixels</b>.</p>
+        <p>We've got your number. Your free Google audit + action plan lands on WhatsApp within 1 working day. Keep an eye out from <b>91pixels</b>.</p>
       </div>
     </div>
   </div>
@@ -334,7 +323,7 @@
     <div class="sec-head">
       <span class="eyebrow">What you get — free</span>
       <h2>A real audit. Not a sales call in disguise.</h2>
-      <p>In 2 minutes you give us your business. In return you get a clear, jargon-free picture of your Google presence and what to fix first.</p>
+      <p>One tap or your number — that's all we need to start. In return you get a clear, jargon-free picture of your Google presence and what to fix first.</p>
     </div>
     <div class="audit-grid">
       <div class="acard reveal">
@@ -365,7 +354,7 @@
       <h2>Three steps. Most of the work is ours.</h2>
     </div>
     <div class="step-grid">
-      <div class="step reveal"><span class="num">01</span><h3>Send your details</h3><p>Business name, city and WhatsApp number. Two minutes, the form right up top.</p></div>
+      <div class="step reveal"><span class="num">01</span><h3>Tap or drop your number</h3><p>One tap opens WhatsApp — or leave your number up top. About 10 seconds, nothing else needed.</p></div>
       <div class="step reveal"><span class="num">02</span><h3>We audit your Google presence</h3><p>Our team checks your profile, ranking, reviews and booking setup against local competitors.</p></div>
       <div class="step reveal"><span class="num">03</span><h3>You get a plan on WhatsApp</h3><p>A clear, no-jargon action plan within 1 working day. No obligation to do anything with us.</p></div>
     </div>
@@ -495,20 +484,8 @@
       var t=document.getElementById('lead'); if(!t) return;
       e.preventDefault();
       t.scrollIntoView({behavior:'smooth', block:'center'});
-      setTimeout(function(){ var f=document.getElementById('biz'); if(f) f.focus({preventScroll:true}); }, 480);
+      setTimeout(function(){ var f=document.getElementById('wa'); if(f) f.focus({preventScroll:true}); }, 480);
     });
-  });
-
-  /* ---- business-type chips ---- */
-  var btype=document.getElementById('btype');
-  document.querySelectorAll('#typeChips .chip').forEach(function(c){
-    function pick(){
-      document.querySelectorAll('#typeChips .chip').forEach(function(x){x.classList.remove('on');x.setAttribute('aria-pressed','false');});
-      c.classList.add('on'); c.setAttribute('aria-pressed','true');
-      if(btype) btype.value = c.getAttribute('data-type');
-    }
-    c.addEventListener('click', pick);
-    c.addEventListener('keydown', function(e){ if(e.key==='Enter'||e.key===' '){ e.preventDefault(); pick(); } });
   });
 
   /* ---- form validation + submit (Formspree AJAX w/ mailto fallback) ---- */
@@ -518,14 +495,9 @@
 
   form.addEventListener('submit', function(e){
     e.preventDefault();
-    var biz=document.getElementById('biz').value.trim();
-    var city=document.getElementById('city').value.trim();
     var wa=document.getElementById('wa').value.trim();
-    var ok=true;
-    setErr('f-biz', !biz); if(!biz) ok=false;
-    setErr('f-city', !city); if(!city) ok=false;
-    var phoneOk=validPhone(wa); setErr('f-wa', !phoneOk); if(!phoneOk) ok=false;
-    if(!ok) return;
+    var phoneOk=validPhone(wa); setErr('f-wa', !phoneOk);
+    if(!phoneOk) return;
 
     track('lead_submit', {});
 
@@ -536,14 +508,10 @@
 
     if(isPlaceholder){
       /* Fallback: open a prefilled email so no lead is lost before Formspree is wired. */
-      var type=(btype&&btype.value)?btype.value:'(not given)';
       var body='New free-audit request from the GM91 landing page%0D%0A%0D%0A'
-        +'Business: '+encodeURIComponent(biz)+'%0D%0A'
-        +'City: '+encodeURIComponent(city)+'%0D%0A'
         +'WhatsApp: '+encodeURIComponent(wa)+'%0D%0A'
-        +'Type: '+encodeURIComponent(type)+'%0D%0A'
         +'Variant: '+ab+' | Vertical: '+encodeURIComponent(vert);
-      window.location.href='mailto:hello@91pixels.com?subject='+encodeURIComponent('Free Google audit — '+biz)+'&body='+body;
+      window.location.href='mailto:hello@91pixels.com?subject='+encodeURIComponent('Free Google audit request')+'&body='+body;
       showSuccess();
       return;
     }
