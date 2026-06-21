@@ -1,3 +1,7 @@
 .claude/
 texture-saloon-pitch.html
 .DS_Store
+
+# local preview / verification artifacts
+.playwright-mcp/
+audit-*.png
