@@ -1,0 +1,256 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>GA4 Implementation Plan · GM91</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Fira+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+<style>
+  :root{
+    --ink:#1A1510;--ink-2:#26201A;--ink-soft:#5A5047;--cream:#F7F2EA;--cream-2:#EFE6D6;
+    --gold:#BD9648;--gold-soft:#D8BC82;--gold-deep:#9C7A33;--terra:#C0492B;--green:#1E7A46;
+    --line:rgba(26,21,16,.12);--line-light:rgba(247,242,234,.16);
+    --display:'Fira Sans',-apple-system,sans-serif;--sans:'Inter',-apple-system,sans-serif;--mono:'JetBrains Mono',monospace;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{font-family:var(--sans);color:var(--ink);background:var(--cream);line-height:1.65;-webkit-font-smoothing:antialiased}
+  .wrap{max-width:860px;margin:0 auto;padding:0 24px}
+  h1,h2,h3{font-family:var(--display);font-weight:600;line-height:1.12;letter-spacing:-.02em}
+  .eyebrow{font-family:var(--sans);font-weight:600;font-size:.72rem;letter-spacing:.2em;text-transform:uppercase;color:var(--gold-deep)}
+  /* header */
+  header{background:var(--ink);color:var(--cream);padding:48px 0 40px;border-bottom:3px solid var(--gold)}
+  header .eyebrow{color:var(--gold-soft)}
+  header h1{color:#fff;font-size:clamp(2rem,5vw,3rem);margin:12px 0 10px}
+  header p{color:#E9DFCF;max-width:62ch}
+  header .meta{margin-top:20px;display:flex;flex-wrap:wrap;gap:18px;font-size:.82rem;color:var(--gold-soft)}
+  header .meta b{color:#fff}
+  /* sections */
+  section{padding:40px 0;border-bottom:1px solid var(--line)}
+  h2{font-size:1.7rem;margin-bottom:6px}
+  h2 .n{color:var(--gold-deep);font-weight:300;margin-right:10px}
+  h3{font-size:1.12rem;margin:22px 0 8px}
+  p{margin:10px 0;color:var(--ink-2)}
+  ul,ol{margin:10px 0 10px 22px}
+  li{margin:6px 0}
+  a{color:var(--gold-deep);text-decoration:underline;text-underline-offset:2px}
+  .lead{font-size:1.08rem;color:var(--ink-soft)}
+  .callout{background:var(--cream-2);border-left:3px solid var(--gold);border-radius:0 10px 10px 0;padding:16px 20px;margin:18px 0;font-size:.95rem}
+  .callout.terra{border-color:var(--terra)}
+  .callout.green{border-color:var(--green)}
+  .callout b{color:var(--ink)}
+  table{width:100%;border-collapse:collapse;margin:16px 0;font-size:.9rem}
+  th,td{text-align:left;padding:10px 12px;border-bottom:1px solid var(--line);vertical-align:top}
+  th{background:var(--ink);color:var(--cream);font-weight:600;font-size:.8rem;letter-spacing:.02em}
+  tr:nth-child(even) td{background:rgba(189,150,72,.06)}
+  .yes{color:var(--green);font-weight:600}
+  .no{color:var(--ink-soft)}
+  code{font-family:var(--mono);font-size:.86em;background:rgba(26,21,16,.07);padding:1px 6px;border-radius:5px}
+  pre{background:var(--ink);color:#EDE4D3;border-radius:12px;padding:18px 20px;overflow-x:auto;margin:14px 0;font-family:var(--mono);font-size:.82rem;line-height:1.6}
+  pre code{background:none;padding:0;color:inherit;font-size:1em}
+  .pill{display:inline-block;font-size:.7rem;font-weight:700;letter-spacing:.06em;text-transform:uppercase;padding:3px 10px;border-radius:100px;background:var(--terra);color:#fff;margin-left:8px;vertical-align:middle}
+  .pill.new{background:var(--terra)}.pill.free{background:var(--green)}
+  .check{list-style:none;margin-left:0}
+  .check li{padding-left:30px;position:relative;margin:8px 0}
+  .check li::before{content:"☐";position:absolute;left:0;top:-1px;color:var(--gold-deep);font-size:1.1rem}
+  .src{font-size:.82rem;color:var(--ink-soft)}
+  .src a{color:var(--ink-soft)}
+  footer{background:var(--ink);color:var(--gold-soft);padding:28px 0;font-size:.8rem}
+  footer b{color:var(--cream)}
+  .tldr{background:linear-gradient(150deg,var(--ink),var(--ink-2));color:var(--cream);border-radius:14px;padding:24px 26px;margin:24px 0}
+  .tldr h2{color:#fff;font-size:1.3rem;margin-bottom:10px}
+  .tldr ol{margin-left:20px}.tldr li{color:#E9DFCF;margin:7px 0}
+  .tldr b{color:var(--gold-soft)}
+  @media print{header,footer{-webkit-print-color-adjust:exact;print-color-adjust:exact}}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="wrap">
+    <span class="eyebrow">GM91 · Implementation Plan</span>
+    <h1>Google Analytics 4 for the GM91 landing pages</h1>
+    <p>How we measure page views, button interactions, and the full conversion funnel — built on the tracking the pages already emit. gtag.js direct, no Tag Manager.</p>
+    <div class="meta">
+      <span>Research: <b>Kevin</b></span>
+      <span>Build: <b>Blake</b></span>
+      <span>For: <b>Bala</b></span>
+      <span>Issue <b>#5</b> · June 2026</span>
+    </div>
+  </div>
+</header>
+
+<div class="wrap">
+
+  <div class="tldr">
+    <h2>TL;DR</h2>
+    <ol>
+      <li>The page is <b>already GA4-ready</b> — its <code>track()</code> helper pushes to <code>dataLayer</code> and calls <code>gtag()</code>. The moment we drop in a real Measurement ID, every existing event flows to GA4.</li>
+      <li><b>3 small code edits</b> in <code>audit.html</code> (live tag + a WhatsApp-click event + the recommended <code>generate_lead</code> event). Same tag added to <code>index.html</code>.</li>
+      <li>The real work is <b>GA4 admin config</b>: register 3 custom dimensions, mark 3 key events, build the funnel.</li>
+      <li><b>Your two action items:</b> a real <code>G-XXXXXXXXXX</code> Measurement ID and confirming the production domain. Everything else is buildable now.</li>
+    </ol>
+  </div>
+
+  <section>
+    <h2><span class="n">1</span>Create the GA4 property &amp; web stream</h2>
+    <ol>
+      <li><b>Admin → Create Property.</b> Name it <code>GM91</code>; set time zone <b>(GMT+05:30) India</b> and currency <b>INR</b>.</li>
+      <li><b>Create a Web data stream</b> (Property → Data Streams → Web) with the production URL.</li>
+      <li><b>Copy the Measurement ID</b> — looks like <code>G-XXXXXXXXXX</code>.</li>
+      <li><b>Confirm Enhanced Measurement is ON</b> (default).</li>
+    </ol>
+    <h3>What Enhanced Measurement gives us free <span class="pill free">no code</span></h3>
+    <table>
+      <tr><th>Event</th><th>Trigger</th><th>Useful here?</th></tr>
+      <tr><td><code>page_view</code></td><td>Every load (can't disable)</td><td class="yes">Core</td></tr>
+      <tr><td><code>scroll</code></td><td>First 90% depth</td><td class="yes">Engagement on a long LP</td></tr>
+      <tr><td><code>click</code> (outbound)</td><td>Link leaving the domain</td><td class="yes">Auto-catches the <code>wa.me</code> clicks</td></tr>
+      <tr><td><code>form_start/submit</code></td><td>Form interaction</td><td class="no">We use our own <code>lead_submit</code> for accuracy</td></tr>
+    </table>
+    <div class="callout"><b>Action for Bala:</b> confirm the production domain (custom domain vs <code>*.github.io</code>) before creating the stream — the stream URL should match.</div>
+  </section>
+
+  <section>
+    <h2><span class="n">2</span>Page views</h2>
+    <p><code>page_view</code> fires automatically on the gtag <code>config</code> call. For our multi-page static site, the only requirement is the <b>same snippet with the same Measurement ID in the <code>&lt;head&gt;</code> of every page</b>. GitHub Pages does full reloads, so each navigation fires its own <code>page_view</code> — no SPA handling needed. Add the snippet to both <code>audit.html</code> and <code>index.html</code>.</p>
+  </section>
+
+  <section>
+    <h2><span class="n">3</span>Button interactions — gtag direct (not GTM)</h2>
+    <p><b>Recommendation: gtag.js direct.</b> The site already calls <code>window.gtag('event', …)</code> inside <code>track()</code>, so wiring gtag is a one-line uncomment. GTM would add indirection and a second script for zero benefit on a 2-page, developer-owned static site.</p>
+    <h3>Events map</h3>
+    <p>GA4 naming rules: snake_case, ≤40 chars, start with a letter. Our names already comply. <code>ab_variant</code> + <code>vertical</code> ride on every event because <code>track()</code> merges them in.</p>
+    <table>
+      <tr><th>GA4 event</th><th>Trigger</th><th>Params</th><th>Key event?</th></tr>
+      <tr><td><code>page_view</code></td><td>Auto</td><td>(auto)</td><td class="no">No</td></tr>
+      <tr><td><code>ab_exposure</code></td><td>On load</td><td>ab_variant, vertical</td><td class="no">No (diagnostic)</td></tr>
+      <tr><td><code>cta_click</code></td><td>Any <code>[data-cta]</code> click</td><td>cta_location, ab_variant, vertical</td><td class="no">No (funnel step)</td></tr>
+      <tr><td><code>whatsapp_click</code><span class="pill new">new</span></td><td>One-tap <code>wa.me</code> button</td><td>cta_location, ab_variant, vertical</td><td class="yes">Yes — primary</td></tr>
+      <tr><td><code>lead_submit</code></td><td>Valid form submit</td><td>ab_variant, vertical</td><td class="no">Optional</td></tr>
+      <tr><td><code>lead_success</code></td><td>Success state shown</td><td>ab_variant, vertical</td><td class="yes">Yes</td></tr>
+      <tr><td><code>generate_lead</code><span class="pill new">new</span></td><td>With <code>lead_success</code></td><td>currency:INR, value, ab_variant, vertical</td><td class="yes">Yes — Google's lead event</td></tr>
+    </table>
+  </section>
+
+  <section>
+    <h2><span class="n">4</span>Code changes in <code>audit.html</code></h2>
+    <p>Three small edits, all building on the existing <code>track()</code> helper. Don't refactor <code>track()</code> — it was written GA4-ready; just feed it gtag.</p>
+
+    <h3>Edit 1 — Replace the commented placeholder with the live tag</h3>
+    <pre><code>&lt;!-- Google Analytics 4 (gtag.js) --&gt;
+&lt;script async src="https://www.googletagmanager.com/gtag/js?id=G-XXXXXXXXXX"&gt;&lt;/script&gt;
+&lt;script&gt;
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){ dataLayer.push(arguments); }
+  gtag('js', new Date());
+  gtag('config', 'G-XXXXXXXXXX');
+&lt;/script&gt;</code></pre>
+    <p>Replace both <code>G-XXXXXXXXXX</code> with the real ID; add the same block to <code>index.html</code>. This defines <code>window.gtag</code> — exactly what <code>track()</code> checks for — so all existing events light up instantly.</p>
+
+    <h3>Edit 2 — Dedicated WhatsApp-click event (fires before the user leaves)</h3>
+    <pre><code>/* WhatsApp one-tap = primary conversion. Fire a dedicated event
+   (gtag uses sendBeacon, survives page unload) before leaving for wa.me */
+document.querySelectorAll('a[href^="https://wa.me/"]').forEach(function(el){
+  el.addEventListener('click', function(){
+    track('whatsapp_click', {cta_location: el.getAttribute('data-cta') || 'wa-link'});
+  });
+});</code></pre>
+
+    <h3>Edit 3 — Recommended <code>generate_lead</code> event on success</h3>
+    <p>Inside <code>showSuccess()</code>, right after <code>track('lead_success', {})</code>:</p>
+    <pre><code>/* GA4 recommended lead event — feeds the Lead acquisition report */
+track('generate_lead', {currency:'INR', value:0});</code></pre>
+    <div class="callout"><b>No other JS changes.</b> <code>ab_exposure</code>, <code>cta_click</code>, <code>lead_submit</code>, <code>lead_success</code> already flow correctly through <code>track()</code>.</div>
+  </section>
+
+  <section>
+    <h2><span class="n">5</span>Conversion funnel &amp; key events</h2>
+    <h3>Mark key events</h3>
+    <p>Admin → Events → toggle <b>Mark as key event</b> on: <code>whatsapp_click</code>, <code>lead_success</code>, <code>generate_lead</code>. Leave <code>cta_click</code>, <code>lead_submit</code>, <code>ab_exposure</code> as standard.</p>
+    <h3>Build the funnel (Explore → Funnel exploration)</h3>
+    <table>
+      <tr><th>Step</th><th>Event</th></tr>
+      <tr><td>1</td><td><code>page_view</code></td></tr>
+      <tr><td>2</td><td><code>cta_click</code></td></tr>
+      <tr><td>3</td><td><code>lead_submit</code> (form path)</td></tr>
+      <tr><td>4</td><td><code>lead_success</code> / <code>generate_lead</code></td></tr>
+    </table>
+    <p>Use a <b>closed funnel</b> for true drop-off. Because WhatsApp skips the form, also build a second funnel: <code>page_view → cta_click → whatsapp_click</code> so the WA path isn't undercounted.</p>
+    <div class="callout"><b>A vs B:</b> drag <code>ab_variant</code> into <b>Breakdown</b> to split every funnel step by variant — an instant read on which converts better.</div>
+  </section>
+
+  <section>
+    <h2><span class="n">6</span>Custom dimensions <span class="pill terra">do this first</span></h2>
+    <p>GA4 only makes a parameter usable in reports once registered as a custom dimension — and it <b>does not backfill</b>. Register these <b>before launch</b>. Admin → Custom definitions → Create custom dimension (Scope = Event).</p>
+    <table>
+      <tr><th>Dimension name</th><th>Scope</th><th>Event parameter (exact)</th></tr>
+      <tr><td>AB Variant</td><td>Event</td><td><code>ab_variant</code></td></tr>
+      <tr><td>Vertical</td><td>Event</td><td><code>vertical</code></td></tr>
+      <tr><td>CTA Location</td><td>Event</td><td><code>cta_location</code></td></tr>
+    </table>
+  </section>
+
+  <section>
+    <h2><span class="n">7</span>The WhatsApp caveat</h2>
+    <p>The one-tap button navigates off-site into WhatsApp. GA4 can't see what happens inside the app — we measure the <b>intent to leave</b> (the click), not the in-chat outcome.</p>
+    <ul>
+      <li><b>Capture the click before they leave</b> — the <code>whatsapp_click</code> event (Edit 2) via gtag's <code>sendBeacon</code> transport, built to deliver during page unload. Mark it a key event.</li>
+      <li><b>Free safety net:</b> Enhanced Measurement's outbound <code>click</code> also records the <code>wa.me</code> navigation independently.</li>
+      <li><b>True closed-loop</b> (chat → conversion) would need the WhatsApp Business API / CRM — a later phase, not this one.</li>
+    </ul>
+  </section>
+
+  <section>
+    <h2><span class="n">8</span>Privacy / consent (practical)</h2>
+    <ul>
+      <li><b>India DPDP Act:</b> analytics cookies will need explicit opt-in consent, but enforcement is phased — full effect by <b>May 2027</b>. Safe to ship GA4 now for India-local traffic.</li>
+      <li><b>If we run ads to EU/UK:</b> GDPR + Google Consent Mode v2 apply now.</li>
+      <li><b>Recommendation:</b> ship GA4 now → add a footer privacy line → backlog a lightweight consent banner + Consent Mode v2 before May 2027 or before EU targeting, whichever comes first.</li>
+      <li>GA4 does not store full IP addresses (used transiently for geo, then discarded) — a baseline DPDP plus.</li>
+    </ul>
+    <div class="callout terra">General guidance, not legal advice — get a quick legal check on the consent banner specifics before 2027.</div>
+  </section>
+
+  <section>
+    <h2><span class="n">9</span>Rollout checklist</h2>
+    <ul class="check">
+      <li>Confirm production domain; create GA4 property (TZ India, currency INR) + web stream</li>
+      <li>Copy the real <code>G-</code> Measurement ID</li>
+      <li><b>Register the 3 custom dimensions FIRST</b> (they don't backfill)</li>
+      <li>Edit 1: live gtag snippet in <code>audit.html</code> + <code>index.html</code></li>
+      <li>Edit 2: <code>whatsapp_click</code> listener · Edit 3: <code>generate_lead</code> in <code>showSuccess()</code></li>
+      <li>Local preview → GA4 DebugView/Realtime → click hero, sticky, WhatsApp, submit form → verify all events arrive with <code>ab_variant</code>/<code>vertical</code>/<code>cta_location</code></li>
+      <li>Mark <code>whatsapp_click</code>, <code>lead_success</code>, <code>generate_lead</code> as key events</li>
+      <li>Build the funnel + WA funnel; add <code>ab_variant</code> as breakdown</li>
+      <li>Footer privacy line; backlog Consent Mode v2 banner</li>
+      <li>Push → deploy → verify live <code>page_view</code> in Realtime</li>
+    </ul>
+    <div class="callout green"><b>Blocking dependencies (Bala):</b> the real Measurement ID + production domain. Also still open in the file: the two <code>91XXXXXXXXXX</code> WhatsApp placeholders and the Formspree <code>YOUR_FORM_ID</code> — resolve in the same pass so events reflect real conversions.</div>
+  </section>
+
+  <section>
+    <h2>Sources</h2>
+    <p class="src">
+      <a href="https://support.google.com/analytics/answer/9304153">GA4 setup (property + stream + gtag)</a> ·
+      <a href="https://support.google.com/analytics/answer/9216061">Enhanced Measurement</a> ·
+      <a href="https://developers.google.com/analytics/devguides/collection/ga4/events">GA4 events / gtag</a> ·
+      <a href="https://developers.google.com/analytics/devguides/collection/ga4/reference/events">Recommended events</a> ·
+      <a href="https://support.google.com/analytics/answer/14240153">Custom dimensions</a> ·
+      <a href="https://support.google.com/analytics/answer/9327974">Funnel exploration</a> ·
+      <a href="https://support.google.com/analytics/answer/9267735">Key events</a> ·
+      <a href="https://www.cookieyes.com/blog/india-digital-personal-data-protection-act-dpdpa/">India DPDPA</a> ·
+      <a href="https://inbriefly.in/google-consent-mode-v2-dpdp-act-india-2026-guide/">Consent Mode v2 (India)</a>
+    </p>
+  </section>
+
+</div>
+
+<footer>
+  <div class="wrap">
+    <b>GM91 · Growth Machine 91</b> — GA4 implementation plan · Research by Kevin, prepared by Blake for Bala · Issue #5 · A 91pixels venture
+  </div>
+</footer>
+</body>
+</html>
